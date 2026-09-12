@@ -1,0 +1,339 @@
+swagger: "2.0"
+info:
+  title: GoCMS v3 API
+  version: 1.0.0
+  description: GoCMS v3 Content Management System API documentation
+  contact:
+    name: GoCMS Support
+    email: support@gocms.com
+
+host: localhost:8080
+basePath: /api/v1
+schemes:
+  - http
+  - https
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /auth/login:
+    post:
+      summary: 用户登录
+      tags: [Auth]
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/LoginRequest'
+      responses:
+        200:
+          description: 登录成功
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        401:
+          description: 登录失败
+
+  /auth/refresh:
+    post:
+      summary: 刷新Token
+      tags: [Auth]
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/TokenRefreshRequest'
+      responses:
+        200:
+          description: Token刷新成功
+          schema:
+            $ref: '#/definitions/TokenRefreshResponse'
+        401:
+          description: 刷新失败
+
+  /auth/register:
+    post:
+      summary: 用户注册
+      tags: [Auth]
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/RegisterRequest'
+      responses:
+        200:
+          description: 注册成功
+        400:
+          description: 注册失败
+
+  /users:
+    get:
+      summary: 获取用户列表
+      tags: [User]
+      parameters:
+        - in: query
+          name: page
+          type: integer
+        - in: query
+          name: page_size
+          type: integer
+      responses:
+        200:
+          description: 用户列表
+          schema:
+            $ref: '#/definitions/PaginationResponse'
+
+  /users/{id}:
+    get:
+      summary: 获取用户详情
+      tags: [User]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 用户详情
+        404:
+          description: 用户不存在
+
+  /articles:
+    post:
+      summary: 批量创建文章
+      tags: [Article]
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BatchCreateArticlesRequest'
+      responses:
+        200:
+          description: 批量创建结果
+
+  /articles/batch:
+    post:
+      summary: 批量操作文章
+      tags: [Article]
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BatchOperationRequest'
+      responses:
+        200:
+          description: 批量操作结果
+
+  /articles/{id}:
+    get:
+      summary: 获取文章详情
+      tags: [Article]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 文章详情
+
+  /videos:
+    post:
+      summary: 批量创建视频
+      tags: [Video]
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BatchCreateVideosRequest'
+      responses:
+        200:
+          description: 批量创建结果
+
+  /webhooks:
+    post:
+      summary: 注册Webhook
+      tags: [Webhook]
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/WebhookSubscription'
+      responses:
+        200:
+          description: Webhook注册成功
+
+  /ws/notifications:
+    get:
+      summary: WebSocket实时通知
+      tags: [WebSocket]
+      responses:
+        101:
+          description: 切换为WebSocket协议
+
+definitions:
+  LoginRequest:
+    type: object
+    required: [username, password]
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+      refresh_token:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+      nickname:
+        type: string
+      roles:
+        type: array
+        items:
+          type: string
+
+  TokenRefreshRequest:
+    type: object
+    required: [refresh_token]
+    properties:
+      refresh_token:
+        type: string
+
+  TokenRefreshResponse:
+    type: object
+    properties:
+      token:
+        type: string
+      refresh_token:
+        type: string
+      expires_at:
+        type: string
+        format: date-time
+
+  RegisterRequest:
+    type: object
+    required: [username, password]
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      nickname:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      roles:
+        type: array
+        items:
+          type: string
+
+  PaginationResponse:
+    type: object
+    properties:
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      items:
+        type: array
+
+  BatchCreateArticlesRequest:
+    type: object
+    required: [articles]
+    properties:
+      articles:
+        type: array
+        items:
+          $ref: '#/definitions/ArticleInput'
+
+  ArticleInput:
+    type: object
+    required: [title, content]
+    properties:
+      title:
+        type: string
+      content:
+        type: string
+      category_id:
+        type: integer
+      tags:
+        type: array
+        items:
+          type: string
+      status:
+        type: integer
+      publish_at:
+        type: string
+        format: date-time
+
+  BatchOperationRequest:
+    type: object
+    required: [ids]
+    properties:
+      ids:
+        type: array
+        items:
+          type: integer
+      status:
+        type: integer
+
+  BatchCreateVideosRequest:
+    type: object
+    required: [videos]
+    properties:
+      videos:
+        type: array
+        items:
+          $ref: '#/definitions/VideoInput'
+
+  VideoInput:
+    type: object
+    required: [title, url]
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      url:
+        type: string
+      category_id:
+        type: integer
+      thumbnail:
+        type: string
+      status:
+        type: integer
+
+  WebhookSubscription:
+    type: object
+    required: [url, events]
+    properties:
+      id:
+        type: string
+      url:
+        type: string
+      events:
+        type: array
+        items:
+          type: string
+      secret:
+        type: string

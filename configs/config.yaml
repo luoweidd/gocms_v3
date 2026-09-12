@@ -1,0 +1,194 @@
+﻿# ============================================
+# GoCMS_v3 系统配置
+# ============================================
+
+# ============================================
+# 服务器配置
+# ============================================
+server:
+  host:  0.0.0.0
+  port: 8084
+  mode: debug
+  read_timeout: 15s
+  write_timeout: 15s
+  idle_timeout: 60s
+
+# ============================================
+# MySQL数据库配置
+# ============================================
+mysql:
+  host: 48.48.48.126
+  port: 3306
+  username: root
+  password: Lu661660.
+  database: gocms_v3
+  charset: utf8mb4
+  parse_time: true
+  loc: Local
+  max_idle_conns: 10
+  max_open_conns: 100
+  conn_max_lifetime: 1h
+  slow_threshold: 200ms
+
+# ============================================
+# Redis配置（用于热门菜单树缓存和用户会话）
+# ============================================
+redis:
+  host: 48.48.48.126
+  port: 6379
+  password: ""
+  db: 0
+  pool_size: 50
+  min_idle_conns: 10
+  dial_timeout: 5s
+  read_timeout: 3s
+  write_timeout: 3s
+  pool_timeout: 4s
+
+# Redis缓存配置（用于热门菜单树和用户会话）
+redis_cache:
+  menu_ttl: 24h
+  session_ttl: 2h
+
+# ============================================
+# Elasticsearch配置
+# ============================================
+elasticsearch:
+  addresses:
+    - http://48.48.48.126:9200
+  username: admin
+  password: Lu661660.
+  index_prefix: gocms_
+  max_retries: 3
+  retry_timeout: 100ms
+  sniff: false
+  health_check: true
+
+# ============================================
+# JWT配置
+# ============================================
+jwt:
+  secret: g3GwR2AR7RZN9UinJclX3U0Vz5i2ShQb
+  issuer: gocms_v3
+  access_token_ttl: 2h
+  refresh_token_ttl: 720h
+  algorithm: HS256
+
+# ============================================
+# CORS配置（修复缩进）
+# ============================================
+cors:
+  enabled: true
+  allow_origins:
+    - "http://localhost:3000"
+    - "http://localhost:5173"
+    - "http://localhost:8080"
+    - "https://example.com"
+  allow_methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allow_headers:
+    - Origin
+    - Content-Type
+    - Authorization
+    - X-Requested-With
+  expose_headers:
+    - Content-Length
+  allow_credentials: true
+  max_age: 3600
+
+# ============================================
+# 上传配置（修复缩进）
+# ============================================
+upload:
+  driver: local
+  local:
+    root_path: ./storage/uploads
+    base_url: http://localhost:8084/uploads
+    max_file_size: 52428800
+    allowed_mimes:
+      - image/jpeg
+      - image/png
+      - image/gif
+      - image/webp
+      - video/mp4
+      - application/pdf
+      - application/msword
+      - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+# ============================================
+# 视频配置
+# ============================================
+video:
+  enabled: true
+  max_file_size: 524288000
+  storage_driver: local
+  local_root_path: ./storage/videos
+  local_base_url: http://localhost:8084/videos
+  allowed_mimes:
+    - video/mp4
+    - video/webm
+    - video/ogg
+    - video/x-msvideo
+    - video/x-matroska
+
+# ============================================
+# 日志配置
+# ============================================
+log:
+  level: debug
+  format: console
+  output: stdout
+  file:
+    path: ./logs/app.log
+    max_size: 100
+    max_age: 30
+    max_backups: 10
+    compress: true
+  sampling:
+    initial: 100
+    thereafter: 100
+
+# ============================================
+# 链路追踪配置
+# ============================================
+trace:
+  enabled: true
+  sampler: always_on
+  ratio: 1.0
+  exporter: stdout
+
+# ============================================
+# 数据备份配置
+# ============================================
+backup:
+  enabled: true
+  storage_path: ./storage/backups
+  max_backup_count: 10
+  mysql:
+    dump_path: /usr/local/mysql/bin/mysqldump
+    user: root
+    password: Lu661660.
+    host: 48.48.48.126
+    port: 3306
+    database: gocms_v3
+
+# ============================================
+# 内容审核配置
+# ============================================
+moderation:
+  enabled: true
+  auto_publish_threshold: 2     # 低于此阈值自动发布
+  require_manual_review: 3      # 达到此等级需人工审核
+  block_level: 4                # 达到此等级直接拦截
+
+# ============================================
+# 指标配置
+# ============================================
+metrics:
+  enabled: true
+  path: /metrics
+  port: 9090

@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========== 基础重置 ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  height: 100%;
+}
+
+/* ========== 页面过渡动画 ========== */
+.page-enter-active {
+  transition: all 0.2s ease-out;
+}
+
+.page-leave-active {
+  transition: all 0.15s ease-in;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+/* ========== 滚动条美化 ========== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A0AEC0;
+}
+
+/* ========== 通用工具类 ========== */
+@layer components {
+  /* 页面容器 */
+  .page-container {
+    @apply p-6 bg-body min-h-screen;
+  }
+
+  /* 页面标题 */
+  .page-header {
+    @apply mb-6;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold text-gray-900;
+  }
+
+  .page-subtitle {
+    @apply text-sm text-gray-500 mt-1;
+  }
+
+  /* 卡片 */
+  .ta-card {
+    @apply bg-white rounded-lg shadow-card border border-gray-100;
+  }
+
+  .ta-card-header {
+    @apply flex items-center justify-between px-5 py-4 border-b border-gray-100;
+  }
+
+  .ta-card-title {
+    @apply text-base font-semibold text-gray-900;
+  }
+
+  .ta-card-body {
+    @apply px-5 py-4;
+  }
+
+  /* 按钮 */
+  .ta-btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-md border transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .ta-btn-primary {
+    @apply bg-primary text-white border-transparent hover:bg-primary-700 focus:ring-primary shadow-sm;
+  }
+
+  .ta-btn-success {
+    @apply bg-secondary text-white border-transparent hover:bg-secondary-600 focus:ring-secondary shadow-sm;
+  }
+
+  .ta-btn-danger {
+    @apply bg-red-600 text-white border-transparent hover:bg-red-700 focus:ring-red-500 shadow-sm;
+  }
+
+  .ta-btn-outline {
+    @apply bg-white text-gray-700 border-gray-300 hover:bg-gray-50 focus:ring-primary shadow-sm;
+  }
+
+  .ta-btn-ghost {
+    @apply bg-transparent text-gray-600 hover:bg-gray-100 focus:ring-gray-300;
+  }
+
+  .ta-btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .ta-btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  /* 输入框 */
+  .ta-input {
+    @apply w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors placeholder:text-gray-400;
+  }
+
+  .ta-label {
+    @apply block text-sm font-medium text-gray-700 mb-1.5;
+  }
+
+  /* 表格 */
+  .ta-table {
+    @apply min-w-full divide-y divide-gray-200;
+  }
+
+  .ta-thead {
+    @apply bg-gray-50;
+  }
+
+  .ta-th {
+    @apply px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+  }
+
+  .ta-td {
+    @apply px-4 py-3 text-sm text-gray-700 border-t border-gray-100;
+  }
+
+  .ta-tr:hover {
+    @apply bg-gray-50;
+  }
+
+  /* 状态标签 */
+  .ta-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .ta-badge-primary {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .ta-badge-success {
+    @apply bg-secondary/10 text-secondary;
+  }
+
+  .ta-badge-danger {
+    @apply bg-red-500/10 text-red-600;
+  }
+
+  .ta-badge-warning {
+    @apply bg-amber-500/10 text-amber-600;
+  }
+
+  .ta-badge-gray {
+    @apply bg-gray-100 text-gray-600;
+  }
+
+  /* 统计卡片 */
+  .stat-card {
+    @apply bg-white rounded-lg shadow-card border border-gray-100 p-5 flex items-center gap-4 transition-all duration-200 hover:shadow-cardHover hover:-translate-y-0.5;
+  }
+
+  .stat-icon {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0;
+  }
+
+  .stat-value {
+    @apply text-2xl font-bold text-gray-900;
+  }
+
+  .stat-label {
+    @apply text-sm text-gray-500 mt-0.5;
+  }
+
+  /* 模态框 */
+  .ta-modal-overlay {
+    @apply fixed inset-0 bg-black/50 z-40 flex items-center justify-center;
+  }
+
+  .ta-modal {
+    @apply bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-hidden;
+  }
+
+  .ta-modal-header {
+    @apply flex items-center justify-between px-6 py-4 border-b border-gray-100;
+  }
+
+  .ta-modal-body {
+    @apply px-6 py-4 overflow-y-auto;
+  }
+
+  .ta-modal-footer {
+    @apply flex items-center justify-end gap-3 px-6 py-4 bg-gray-50 border-t border-gray-100;
+  }
+
+  /* 空状态 */
+  .ta-empty {
+    @apply flex flex-col items-center justify-center py-12 text-center;
+  }
+
+  .ta-empty-icon {
+    @apply text-gray-300 mb-4;
+  }
+
+  .ta-empty-text {
+    @apply text-gray-500 text-sm;
+  }
+}
+
+/* ========== TailAdmin 登录/注册页背景渐变 ========== */
+@layer utilities {
+  .auth-bg {
+    background: linear-gradient(135deg, #EEF2FF 0%, #F3F4F6 100%);
+  }
+}
